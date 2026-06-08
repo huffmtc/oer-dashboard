@@ -1,199 +1,108 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MTC OER Dashboard</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  margin: 0;
-  background: #ffffff;
-  color: #505859;
-}
-
-.container {
-  padding: 15px;
-  max-width: 1200px;
-  margin: auto;
-}
-
-h1 {
-  color: #0c436a;
-}
-
-/* KPI */
-.kpis {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-  gap: 15px;
-}
-
-.kpi {
-  background: #f5f7f8;
-  padding: 15px;
-  border-radius: 10px;
-}
-
-.kpi .value {
-  font-size: 28px;
-  font-weight: bold;
-  color: #0c436a;
-}
-
-.card {
-  margin-top: 20px;
-  padding: 15px;
-  border-radius: 10px;
-  background: #f9fbfc;
-}
-
-canvas {
-  width: 100% !important;
-}
-
-/* Table */
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-  text-align: left;
-}
-
-th {
-  background: #0c436a;
-  color: white;
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open Education Data Dashboard | Midlands Technical College</title>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root{
+      --mtc-navy:#0c436a; --mtc-blue:#238cc1; --mtc-gold:#f5a81c; --mtc-green:#79bc43;
+      --mtc-teal:#007166; --mtc-orange:#e75525; --mtc-gray:#8e9c9c; --mtc-light-blue:#b8d1dc;
+      --text:#505859; --bg:#ffffff; --panel:#ffffff; --soft:#f4f8fa; --border:#d6e1e7;
+    }
+    *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:var(--bg);line-height:1.45}
+    .wrap{max-width:1180px;margin:0 auto;padding:18px}.hero{background:linear-gradient(135deg,var(--mtc-navy),#0a5d88);color:white;border-radius:16px;padding:24px 28px;margin-bottom:18px;box-shadow:0 8px 22px rgba(12,67,106,.15)}
+    .eyebrow{font-size:.82rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mtc-gold);font-weight:700}.hero h1{margin:6px 0 6px;font-size:clamp(1.7rem,4vw,2.6rem);line-height:1.1}.hero p{margin:0;max-width:900px;color:#e9f4f9}
+    .notice{display:none;background:#fff7df;border:1px solid #f3d37a;color:#56410c;border-radius:12px;padding:12px 14px;margin:12px 0}.notice.show{display:block}
+    .filters{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:12px;background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:16px}.filter label{display:block;font-weight:700;color:var(--mtc-navy);font-size:.86rem;margin-bottom:5px}.filter select,.filter input{width:100%;border:1px solid var(--border);border-radius:10px;padding:10px;background:#fff;color:var(--text)}
+    .kpis{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:12px;margin:0 0 16px}.kpi{border:1px solid var(--border);border-left:6px solid var(--mtc-gold);background:var(--panel);border-radius:14px;padding:16px;box-shadow:0 4px 16px rgba(80,88,89,.07)}.kpi:nth-child(2){border-left-color:var(--mtc-blue)}.kpi:nth-child(3){border-left-color:var(--mtc-green)}.kpi:nth-child(4){border-left-color:var(--mtc-teal)}.kpi .label{font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mtc-navy);font-weight:700}.kpi .value{font-size:1.8rem;font-weight:800;color:var(--mtc-navy);margin-top:4px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:0 4px 16px rgba(80,88,89,.07)}.card h2{margin:0 0 4px;color:var(--mtc-navy);font-size:1.2rem}.card .sub{margin:0 0 12px;color:#687071;font-size:.92rem}.chartBox{height:370px;position:relative}.chartBox.small{height:320px}
+    .tableControls{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:8px 0 12px}.tableControls input{max-width:320px;width:100%;border:1px solid var(--border);border-radius:10px;padding:10px}.tableWrap{overflow:auto;border:1px solid var(--border);border-radius:12px}table{border-collapse:collapse;width:100%;min-width:780px;background:white}th,td{padding:10px 12px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}th{background:var(--mtc-navy);color:#fff;position:sticky;top:0;z-index:1;cursor:pointer;font-size:.88rem}tr:nth-child(even) td{background:#f8fbfc}.num{text-align:right;white-space:nowrap}.badge{display:inline-block;padding:3px 8px;border-radius:999px;font-size:.8rem;font-weight:700;background:#eaf4f8;color:var(--mtc-navy)}.footer{font-size:.82rem;color:#687071;margin:12px 0 4px}.btn{border:0;background:var(--mtc-navy);color:white;padding:9px 12px;border-radius:10px;cursor:pointer}.btn:hover{background:#0a5d88}
+    @media(max-width:850px){.filters,.kpis,.grid2{grid-template-columns:1fr}.wrap{padding:12px}.hero{padding:18px}.chartBox{height:330px}.kpi .value{font-size:1.55rem}}
+  </style>
 </head>
-
 <body>
-<div class="container">
-
-<h1>Open Education Data & Impact Dashboard</h1>
-
-<div class="kpis">
-  <div class="kpi">
-    <div id="enrollment"></div>
-    <div>Total Enrollment</div>
-  </div>
-  <div class="kpi">
-    <div id="savings"></div>
-    <div>Estimated Savings</div>
-  </div>
-  <div class="kpi">
-    <div id="courses"></div>
-    <div>OER Courses</div>
-  </div>
-  <div class="kpi">
-    <div id="sections"></div>
-    <div>Avg Sections / Term</div>
-  </div>
-</div>
-
-<div class="card">
-  <h3>OER Implementation Pipeline</h3>
-  <canvas id="pipelineChart"></canvas>
-</div>
-
-<div class="card">
-  <h3>Top 10 Courses by Savings</h3>
-  <canvas id="savingsChart"></canvas>
-</div>
-
-<div class="card">
-  <h3>Top Courses by Students Impacted</h3>
-  <canvas id="studentsChart"></canvas>
-</div>
-
-<div class="card">
-  <h3>Course Impact Table</h3>
-  <table id="table">
-    <thead>
-      <tr>
-        <th>Course</th>
-        <th>Department</th>
-        <th>Enrollment</th>
-        <th>Status</th>
-        <th>Savings</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
-
-</div>
-
+  <main class="wrap">
+    <section class="hero" aria-labelledby="title">
+      <div class="eyebrow">Midlands Technical College</div>
+      <h1 id="title">Open Education Data &amp; Impact Dashboard</h1>
+      <p>Interactive summary of OER course impact, student savings, and students impacted. Use the filters to refine the charts and course-level table.</p>
+    </section>
+    <div id="notice" class="notice" role="status"></div>
+    <section class="filters" aria-label="Dashboard filters">
+      <div class="filter"><label for="semesterFilter">Semester</label><select id="semesterFilter"><option value="All">All semesters</option></select></div>
+      <div class="filter"><label for="departmentFilter">Department</label><select id="departmentFilter"><option value="All">All departments</option></select></div>
+      <div class="filter"><label for="statusFilter">OER Status</label><select id="statusFilter"><option value="All">All statuses</option></select></div>
+      <div class="filter"><label for="courseFilter">Course</label><select id="courseFilter"><option value="All">All courses</option></select></div>
+    </section>
+    <section class="kpis" aria-label="Key metrics">
+      <div class="kpi"><div class="label">Total student enrollment</div><div id="kpiEnrollment" class="value">—</div></div>
+      <div class="kpi"><div class="label">Estimated student savings</div><div id="kpiSavings" class="value">—</div></div>
+      <div class="kpi"><div class="label">OER courses</div><div id="kpiCourses" class="value">—</div></div>
+      <div class="kpi"><div class="label">Faculty participants</div><div id="kpiFaculty" class="value">—</div></div>
+    </section>
+    <section class="grid2">
+      <article class="card"><h2>Top Courses by Savings</h2><p class="sub">Top 10 courses by estimated student savings for the selected filters.</p><div class="chartBox"><canvas id="savingsChart"></canvas></div></article>
+      <article class="card"><h2>Top Courses by Students Impacted</h2><p class="sub">Top 10 courses by student enrollment for the selected filters.</p><div class="chartBox"><canvas id="studentsChart"></canvas></div></article>
+    </section>
+    <section class="card"><h2>Course-Level Impact</h2><p class="sub">Sortable course-level view. Click a column heading to sort.</p><div class="tableControls"><input id="tableSearch" type="search" placeholder="Search course, department, semester, or status…" aria-label="Search course impact table"><button id="resetBtn" class="btn" type="button">Reset filters</button></div><div class="tableWrap"><table id="impactTable"><thead><tr><th data-sort="course">Course</th><th data-sort="department">Department</th><th data-sort="semester">Semester</th><th data-sort="enrollment">Enrollment</th><th data-sort="status">OER Status</th><th data-sort="savings">Estimated Savings</th></tr></thead><tbody></tbody></table></div></section>
+    <section class="grid2">
+      <article class="card"><h2>Savings by Department</h2><p class="sub">Estimated savings grouped by department for the selected filters.</p><div class="chartBox small"><canvas id="deptChart"></canvas></div></article>
+      <article class="card"><h2>OER Status Distribution</h2><p class="sub">Course count by OER status for the selected filters.</p><div class="chartBox small"><canvas id="statusChart"></canvas></div></article>
+    </section>
+    <p class="footer">Data source: <strong>OER Data Dashboard.xlsx</strong>. To update this dashboard, replace the workbook in GitHub with the same filename.</p>
+  </main>
 <script>
-fetch('data/oer-data.json')
-.then(res => res.json())
-.then(data => {
-
-document.getElementById('enrollment').innerHTML =
-  data.kpis.enrollment.toLocaleString();
-
-document.getElementById('savings').innerHTML =
-  "$" + data.kpis.savings.toLocaleString();
-
-document.getElementById('courses').innerHTML =
-  data.kpis.courses;
-
-document.getElementById('sections').innerHTML =
-  data.kpis.avgSections;
-
-/* Top Courses */
-const top = data.courses.sort((a,b)=>b.savings-a.savings).slice(0,10);
-
-new Chart(document.getElementById('savingsChart'), {
-  type: 'bar',
-  data: {
-    labels: top.map(x=>x.course),
-    datasets: [{data: top.map(x=>x.savings), backgroundColor:'#238cc1'}]
-  },
-  options: { indexAxis:'y' }
-});
-
-new Chart(document.getElementById('studentsChart'), {
-  type: 'bar',
-  data: {
-    labels: top.map(x=>x.course),
-    datasets: [{data: top.map(x=>x.enrollment), backgroundColor:'#79bc43'}]
-  },
-  options: { indexAxis:'y' }
-});
-
-/* Pipeline */
-new Chart(document.getElementById('pipelineChart'), {
-  type: 'doughnut',
-  data: {
-    labels: data.status.map(x=>x.status),
-    datasets: [{data:data.status.map(x=>x.count)}]
+const WORKBOOK_URL = 'OER%20Data%20Dashboard.xlsx';
+const colors = ['#0c436a','#238cc1','#f5a81c','#79bc43','#007166','#e75525','#8e9c9c','#b8d1dc'];
+let allRows = []; let charts = {}; let sortState = {key:'savings', dir:'desc'};
+const fmtInt = n => Number(n||0).toLocaleString('en-US');
+const fmtMoney = n => Number(n||0).toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+const normCourse = v => String(v||'').replace(/[‑–—]/g,'-').trim().toUpperCase();
+const norm = v => String(v||'').trim();
+function showNotice(msg){ const el=document.getElementById('notice'); el.textContent=msg; el.classList.add('show'); }
+function sheetRows(wb, name){ const ws=wb.Sheets[name]; if(!ws) return []; return XLSX.utils.sheet_to_json(ws,{header:1,defval:null,raw:true}); }
+function findHeader(rows, required){
+  for(let i=0;i<Math.min(rows.length,25);i++){ const row=rows[i].map(v=>norm(v)); if(required.every(h=>row.includes(h))) return i; }
+  return -1;
+}
+function buildRowsFromWorkbook(wb){
+  const savingsRaw = sheetRows(wb,'Data_Savings'); const statusRaw = sheetRows(wb,'Data_Status');
+  const h = findHeader(savingsRaw,['Course','Subject','OER Status']);
+  if(h < 0) throw new Error('Could not find the Data_Savings header row.');
+  const headers = savingsRaw[h].map(v=>norm(v)); const idx = Object.fromEntries(headers.map((v,i)=>[v,i]));
+  const statusH = findHeader(statusRaw,['Course','Status']); const statusMap = new Map();
+  if(statusH >= 0){ const sh=statusRaw[statusH].map(v=>norm(v)); const sidx=Object.fromEntries(sh.map((v,i)=>[v,i])); for(let r=statusH+1;r<statusRaw.length;r++){ const row=statusRaw[r]; const c=normCourse(row[sidx.Course]); if(c) statusMap.set(c, norm(row[sidx.Status])); } }
+  const out=[];
+  for(let r=h+1;r<savingsRaw.length;r++){
+    const row=savingsRaw[r]; const course=normCourse(row[idx.Course]); if(!course) continue;
+    const department=norm(row[idx.Subject]) || 'Unassigned';
+    const status=norm(row[idx['OER Status']]) || statusMap.get(course) || 'Unspecified';
+    const faEnroll=Number(row[idx['FA25 Enrollment']]||0), spEnroll=Number(row[idx['SP26 Enrollment']]||0);
+    const faSavings=Number(row[idx['FA Savings']]||0), spSavings=Number(row[idx['SP Savings']]||0);
+    const rowsToAdd=[];
+    if(faEnroll || faSavings) rowsToAdd.push({course,department,status,semester:'Fall 2025',enrollment:faEnroll,savings:faSavings});
+    if(spEnroll || spSavings) rowsToAdd.push({course,department,status,semester:'Spring 2026',enrollment:spEnroll,savings:spSavings});
+    if(!rowsToAdd.length){ rowsToAdd.push({course,department,status,semester:'No enrollment listed',enrollment:0,savings:0}); }
+    out.push(...rowsToAdd);
   }
-});
-
-/* Table */
-const tbody = document.querySelector("#table tbody");
-
-data.courses.forEach(c=>{
-  tbody.innerHTML += `
-  <tr>
-    <td>${c.course}</td>
-    <td>${c.department}</td>
-    <td>${c.enrollment}</td>
-    <td>${c.status}</td>
-    <td>$${c.savings.toLocaleString()}</td>
-  </tr>`;
-});
-
-});
+  return out;
+}
+function uniqueSorted(arr){return [...new Set(arr.filter(Boolean))].sort((a,b)=>a.localeCompare(b));}
+function fillSelect(id, values, allLabel){ const el=document.getElementById(id); const current=el.value||'All'; el.innerHTML=`<option value="All">${allLabel}</option>`+values.map(v=>`<option value="${String(v).replaceAll('&','&amp;').replaceAll('"','&quot;')}">${v}</option>`).join(''); if([...el.options].some(o=>o.value===current)) el.value=current; }
+function initFilters(){ fillSelect('semesterFilter', uniqueSorted(allRows.map(r=>r.semester)), 'All semesters'); fillSelect('departmentFilter', uniqueSorted(allRows.map(r=>r.department)), 'All departments'); fillSelect('statusFilter', uniqueSorted(allRows.map(r=>r.status)), 'All statuses'); fillSelect('courseFilter', uniqueSorted(allRows.map(r=>r.course)), 'All courses'); ['semesterFilter','departmentFilter','statusFilter','courseFilter','tableSearch'].forEach(id=>document.getElementById(id).addEventListener('input', update)); document.getElementById('resetBtn').addEventListener('click',()=>{['semesterFilter','departmentFilter','statusFilter','courseFilter'].forEach(id=>document.getElementById(id).value='All'); document.getElementById('tableSearch').value=''; update();}); }
+function filteredRows(){ const sem=document.getElementById('semesterFilter').value, dep=document.getElementById('departmentFilter').value, stat=document.getElementById('statusFilter').value, course=document.getElementById('courseFilter').value; const q=document.getElementById('tableSearch').value.toLowerCase().trim(); return allRows.filter(r=>(sem==='All'||r.semester===sem)&&(dep==='All'||r.department===dep)&&(stat==='All'||r.status===stat)&&(course==='All'||r.course===course)&&(!q||[r.course,r.department,r.semester,r.status].join(' ').toLowerCase().includes(q))); }
+function groupBy(rows, key, valueKey){ const m=new Map(); rows.forEach(r=>m.set(r[key],(m.get(r[key])||0)+Number(r[valueKey]||0))); return [...m.entries()].map(([label,value])=>({label,value})); }
+function groupCourse(rows, valueKey){ const m=new Map(); rows.forEach(r=>m.set(r.course,(m.get(r.course)||0)+Number(r[valueKey]||0))); return [...m.entries()].map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value).slice(0,10).reverse(); }
+function chart(id,type,labels,data,opts={}){ if(charts[id]) charts[id].destroy(); const ctx=document.getElementById(id); charts[id]=new Chart(ctx,{type,data:{labels,datasets:[{label:opts.label||'',data,backgroundColor:opts.multi?labels.map((_,i)=>colors[i%colors.length]):(opts.color||'#238cc1'),borderColor:opts.borderColor||'#0c436a',borderWidth:1,borderRadius:type==='bar'?8:0}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:opts.horizontal?'y':'x',plugins:{legend:{display:!!opts.legend,position:'bottom'},tooltip:{callbacks:{label:(c)=> opts.money?fmtMoney(c.raw):(opts.integer?fmtInt(c.raw):c.raw)}}},scales:type==='doughnut'?{}:{x:{ticks:{callback:v=>opts.money?fmtMoney(v):fmtInt(v)},grid:{display:false}},y:{grid:{color:'#edf3f6'}}}}}); }
+function updateKpis(rows){ const enrollment=rows.reduce((s,r)=>s+r.enrollment,0), savings=rows.reduce((s,r)=>s+r.savings,0), courses=new Set(rows.map(r=>r.course)).size; document.getElementById('kpiEnrollment').textContent=fmtInt(enrollment); document.getElementById('kpiSavings').textContent=fmtMoney(savings); document.getElementById('kpiCourses').textContent=fmtInt(courses); document.getElementById('kpiFaculty').textContent='—'; }
+function updateCharts(rows){ const topSavings=groupCourse(rows,'savings'); chart('savingsChart','bar',topSavings.map(x=>x.label),topSavings.map(x=>x.value),{horizontal:true,money:true,label:'Estimated savings',color:'#238cc1'}); const topStudents=groupCourse(rows,'enrollment'); chart('studentsChart','bar',topStudents.map(x=>x.label),topStudents.map(x=>x.value),{horizontal:true,integer:true,label:'Students impacted',color:'#79bc43'}); const dept=groupBy(rows,'department','savings').sort((a,b)=>b.value-a.value).slice(0,12).reverse(); chart('deptChart','bar',dept.map(x=>x.label),dept.map(x=>x.value),{horizontal:true,money:true,label:'Estimated savings',color:'#0c436a'}); const stat=groupBy(rows,'status','course').map(x=>({label:x.label,value:new Set(rows.filter(r=>r.status===x.label).map(r=>r.course)).size})); chart('statusChart','doughnut',stat.map(x=>x.label),stat.map(x=>x.value),{multi:true,integer:true,label:'Courses',legend:true}); }
+function renderTable(rows){ let data=[...rows]; const key=sortState.key; data.sort((a,b)=>{ const av=a[key], bv=b[key]; const res=(typeof av==='number'||typeof bv==='number') ? Number(av||0)-Number(bv||0) : String(av).localeCompare(String(bv)); return sortState.dir==='asc'?res:-res; }); const tbody=document.querySelector('#impactTable tbody'); tbody.innerHTML=data.map(r=>`<tr><td>${r.course}</td><td>${r.department}</td><td>${r.semester}</td><td class="num">${fmtInt(r.enrollment)}</td><td><span class="badge">${r.status}</span></td><td class="num">${fmtMoney(r.savings)}</td></tr>`).join(''); }
+function update(){ const rows=filteredRows(); updateKpis(rows); updateCharts(rows); renderTable(rows); }
+document.querySelectorAll('#impactTable th').forEach(th=>th.addEventListener('click',()=>{ const k=th.dataset.sort; if(sortState.key===k) sortState.dir=sortState.dir==='asc'?'desc':'asc'; else sortState={key:k,dir:'asc'}; update(); }));
+(async function start(){ try{ const res=await fetch(WORKBOOK_URL,{cache:'no-store'}); if(!res.ok) throw new Error('Workbook not found. Make sure OER Data Dashboard.xlsx is uploaded to the same GitHub repository folder as index.html.'); const buf=await res.arrayBuffer(); const wb=XLSX.read(buf,{type:'array'}); allRows=buildRowsFromWorkbook(wb); initFilters(); update(); }catch(err){ console.error(err); showNotice(err.message || String(err)); } })();
 </script>
-
 </body>
 </html>
