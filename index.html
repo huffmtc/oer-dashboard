@@ -586,17 +586,44 @@ byId("perceptionFilterNote").innerHTML =
       ]
     : (dashboardData.qualityComparison || []);
 
-  const methodologyRows = (dashboardData.methodology || []).map(r => ({...r}));
-  if (useGrouped) {
-    const responseRow = methodologyRows.find(r => r.Field === "Total Responses");
-    if (responseRow) responseRow.Value = totalResponses;
-    const methodRow = methodologyRows.find(r => r.Field === "Methodology");
-    if (methodRow) methodRow.Value = "Filtered weighted average by response count";
-  }
+ const responseMetrics = dashboardData.responseMetrics || {};
 
-  byId('methodologyTable').innerHTML = methodologyRows
-    .map(r => `<tr><td>${r.Field}</td><td>${displayValue(r.Field,r.Value)}</td></tr>`)
-    .join('');
+const methodologyRows = [
+  {
+    Field: "Survey Period",
+    Value: "Spring 2026"
+  },
+  {
+    Field: "Population",
+    Value: "Students in OER-adopted sections"
+  },
+  {
+    Field: "Sections Surveyed",
+    Value: responseMetrics["Sections Surveyed"]
+  },
+  {
+    Field: "Overall Responses",
+    Value: responseMetrics["Total Survey Responses"]
+  },
+  ...(useGrouped ? [{
+    Field: "Filtered Responses",
+    Value: totalResponses
+  }] : []),
+  {
+    Field: "Overall Response Rate",
+    Value: responseMetrics["Average Response Rate"]
+  },
+  {
+    Field: "Methodology",
+    Value: useGrouped
+      ? "Filtered weighted average by response count"
+      : "Weighted average by response count"
+  }
+];
+
+byId('methodologyTable').innerHTML = methodologyRows
+  .map(r => `<tr><td>${r.Field}</td><td>${displayValue(r.Field, r.Value)}</td></tr>`)
+  .join('');
 
   byId('costAccessBeforeTable').innerHTML = [
     {Metric:"Cost Concern", Value:costConcern, Context:"worried about textbook costs"},
