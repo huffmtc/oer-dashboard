@@ -18,6 +18,25 @@
     grid-template-columns: 1fr;
   }
 }
+    .filter-warning {
+  display: none;
+  margin: 16px 0;
+  padding: 18px 20px;
+  border-left: 8px solid var(--orange);
+  background: #fff3ef;
+  border-radius: 14px;
+  color: #7a2f13;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: var(--shadow);
+}
+
+.filter-warning strong {
+  display: block;
+  color: var(--navy);
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+}
   </style>
 </head>
 <body><main class="dashboard">
@@ -218,7 +237,7 @@
 <div class="overview-note">
   <strong>Note:</strong> Student perception results reflect Spring 2026 survey responses. Filters apply only to survey results and may be limited when response counts are too small to interpret responsibly.
 </div>
-<div id="perceptionFilterNote" class="note" style="display:none;"></div>
+<div id="perceptionFilterNote" class="filter-warning" role="status" aria-live="polite"></div>
   <section class="callout blue full-card"><h2>Key Takeaways</h2><ul class="takeaways" id="takeaways"></ul></section><section class="grid-2"><article class="card"><h2>Survey Methodology</h2><table class="field-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody id="methodologyTable"></tbody></table></article><article class="card"><h2>Cost &amp; Access Indicators</h2><p><strong>Why OER Matters</strong> — student barriers before OER.</p><table class="field-table"><thead><tr><th>Metric</th><th>Value</th><th>Context</th></tr></thead><tbody id="costAccessBeforeTable"></tbody></table><p style="margin-top:14px"><strong>OER Outcomes:</strong></p><table class="field-table"><thead><tr><th>Metric</th><th>Value</th><th>Context</th></tr></thead><tbody id="oerOutcomesTable"></tbody></table></article></section><section class="card full-card"><h2>Satisfaction Ratings</h2><p>Average scores on a 1–5 Likert scale.</p><table class="field-table"><thead><tr><th>Metric</th><th>Score</th><th>% Positive</th><th>Rating</th></tr></thead><tbody id="satisfactionTable"></tbody></table></section><section class="grid-2"><article class="card"><h2>Cost Barriers Students Faced Before OER</h2><p>Cost consequences reported by survey respondents.</p><div class="chart-wrap"><canvas id="barriersChart"></canvas></div></article><article class="card"><h2>How Students Rate OER Quality</h2><p>Compared to traditional paid textbooks.</p><div class="chart-wrap"><canvas id="qualityChart"></canvas></div><div class="callout blue quality-callout"><div class="percent" id="equalBetterPercent">—</div><div><strong>rate OER equal or better</strong><br>than paid textbooks</div></div></article></section></section><div id="errorBox" class="error"></div></main>
 <script>
 const DATA_URL='data/dashboard-data.json';
@@ -484,8 +503,8 @@ function renderStaticPerceptions(){
 
   if (useGrouped && totalResponses < minimumResponses) {
     byId("perceptionFilterNote").style.display = "block";
-    byId("perceptionFilterNote").textContent =
-      "Not enough responses to display this filtered view. Broaden the filters to protect privacy and avoid over-interpreting small groups.";
+byId("perceptionFilterNote").innerHTML =
+  "<strong>Not enough responses to display this filtered view.</strong> Broaden the filters to protect privacy and avoid over-interpreting small groups.";
     return;
   } else {
     byId("perceptionFilterNote").style.display = "none";
