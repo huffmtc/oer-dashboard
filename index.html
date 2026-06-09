@@ -80,12 +80,18 @@ function init(){
   populateSelect('statusFilter','All statuses',uniqueSorted(dashboardData.courseImpact.map(r=>norm(r['OER Status']))));
   populateSelect('courseFilter','All courses',uniqueSorted(dashboardData.courseImpact.map(r=>course(r.Course))));
 
-  ['semesterFilter','departmentFilter','statusFilter','courseFilter'].forEach(id=>
-    byId(id).addEventListener('change',()=>{
-      currentPage=1;
-      update();
-    })
-  );
+['semesterFilter','departmentFilter','statusFilter'].forEach(id=>
+  byId(id).addEventListener('change',()=>{
+    currentPage=1;
+    refreshGlobalFilterOptions();
+    update();
+  })
+);
+
+byId('courseFilter').addEventListener('change',()=>{
+  currentPage=1;
+  update();
+});
 
   byId('tableSearch').addEventListener('input',()=>{
     currentPage=1;
@@ -121,10 +127,11 @@ function init(){
     btn.addEventListener('click',()=>showTab(btn.dataset.tab))
   );
 
-  initPerceptionFilters();
+refreshGlobalFilterOptions();
+initPerceptionFilters();
 
-  update();
-  renderStaticPerceptions();
+renderStaticPerceptions();
+update();
 }
   function showTab(tab){document.querySelectorAll('.tab-btn').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab?'true':'false'));document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id===tab));const filters=byId('dashboardFilters');if(filters)filters.classList.toggle('hidden',tab==='perceptions');setTimeout(()=>Object.values(charts).filter(Boolean).forEach(c=>c.resize()),50)}
 function getMetric(row,semester,type){if(type==='enrollment'){if(semester===FALL_KEY)return toNumber(row[FALL_ENROLLMENT]);if(semester===SPRING_KEY)return toNumber(row[SPRING_ENROLLMENT]);return toNumber(row[FALL_ENROLLMENT])+toNumber(row[SPRING_ENROLLMENT])}if(type==='savings'){if(semester===FALL_KEY)return toNumber(row[FALL_SAVINGS]);if(semester===SPRING_KEY)return toNumber(row[SPRING_SAVINGS]);return toNumber(row['Combined Savings'])||toNumber(row[FALL_SAVINGS])+toNumber(row[SPRING_SAVINGS])}return 0}
@@ -231,6 +238,35 @@ function initPerceptionFilters() {
   byId("perceptionCourseFilter").addEventListener("change", () => {
     renderStaticPerceptions();
   });
+}
+  function refreshGlobalFilterOptions() {
+  const sem = byId('semesterFilter').value;
+  const dept = byId('departmentFilter').value;
+  const status = byId('statusFilter').value;
+  const selectedCourse = byId('courseFilter').value;
+
+  const validRows = dashboardData.courseImpact.filter(r => {
+    const hasSemesterData =
+      sem === 'all' ||
+      getMetric(r, sem, 'enrollment') > 0 ||
+      getMetric(r, sem, 'savings') > 0;
+
+    return hasSemesterData
+      && (dept === 'all' || norm(r.Department) === dept)
+      && (status === 'all' || norm(r['OER Status']) === status);
+  });
+
+  populateSelect(
+    'courseFilter',
+    'All courses',
+    uniqueSorted(validRows.map(r => course(r.Course)))
+  );
+
+  if ([...byId('courseFilter').options].some(o => o.value === selectedCourse)) {
+    byId('courseFilter').value = selectedCourse;
+  } else {
+    byId('courseFilter').value = 'all';
+  }
 }
 function refreshPerceptionFilterOptions() {
   const rows = perceptionRows();
