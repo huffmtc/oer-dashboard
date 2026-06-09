@@ -19,7 +19,7 @@
     "Survey Responses (Total)": 1171.0,
     "Average Response Rate": 0.35299025086464075,
     "Average Sections Per Semester": 828,
-    "Projected Developing Courses Savings": 0.88
+    "Projected Developing Courses Savings": 1431797
   },
   "courseImpact": [
     {
@@ -1397,18 +1397,18 @@
       "Context": "went without materials"
     }
   ],
-  "oerOutcomes": [
-    {
-      "Metric": "None",
-      "Value": 0,
-      "Context": "4.02"
-    },
-    {
-      "Metric": "None",
-      "Value": 0,
-      "Context": "2.79"
-    }
-  ],
+"oerOutcomes": [
+  {
+    "Metric": "First-Day Access",
+    "Value": 4.02,
+    "Context": "Materials available Day 1"
+  },
+  {
+    "Metric": "Want More OER",
+    "Value": 2.79,
+    "Context": "Student preference"
+  }
+],
   "responseMetrics": {
     "Total Survey Responses": 1171.0,
     "Average Response Rate": 0.35299025086464075,
