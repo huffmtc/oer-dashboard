@@ -7,8 +7,77 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     :root{--navy:#0c436a;--blue:#238cc1;--gold:#f5a81c;--green:#79bc43;--teal:#007166;--orange:#e75525;--gray:#8e9c9c;--light-blue:#b8d1dc;--text:#505859;--bg:#fff;--soft:#f4f7f9;--border:#d9e3e8;--shadow:0 10px 28px rgba(12,67,106,.10)}
-    *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:var(--bg);line-height:1.45}.dashboard{max-width:1180px;margin:0 auto;padding:20px}.hero{border-top:10px solid var(--gold);background:linear-gradient(135deg,var(--navy),#155e8f);color:#fff;border-radius:18px;padding:28px;box-shadow:var(--shadow);margin-bottom:16px}.hero h1{margin:0 0 8px;font-size:clamp(1.75rem,3vw,2.6rem);letter-spacing:-.03em;color:#fff}.hero p{margin:0;max-width:950px;color:rgba(255,255,255,.92);font-size:1.02rem}.notice{margin-top:12px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.92);font-size:.9rem}.tabs{display:flex;gap:4px;flex-wrap:wrap;margin:18px 0 0;border-bottom:3px solid var(--navy)}.tab-btn{border:1px solid var(--border);border-bottom:0;background:#f4f7f9;color:var(--navy);border-radius:14px 14px 0 0;padding:12px 18px;font-weight:900;cursor:pointer;box-shadow:none;position:relative;top:3px;text-transform:uppercase;letter-spacing:.02em}.tab-btn[aria-selected="true"]{background:#fff;color:var(--navy);border-color:var(--navy);border-top:5px solid var(--gold);padding-top:8px}.overview-note{margin:10px 0 16px;padding:12px 14px;border-left:6px solid var(--blue);background:#f4f7f9;border-radius:12px;color:#505859;font-size:.92rem}.overview-callouts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}.projected-card{background:#fff8ea;border-color:#f8d389}.projected-card .projected-line{font-size:1.08rem;line-height:1.5;margin:0;color:var(--navy)}.projected-card .projected-line strong{text-transform:uppercase;letter-spacing:.04em}.projected-card #projectedGrowth{font-size:1.45rem;font-weight:900;color:var(--navy);white-space:nowrap}.filters{display:grid;grid-template-columns:repeat(3,minmax(160px,1fr));gap:12px;background:var(--soft);border:1px solid var(--border);border-radius:16px;padding:16px;margin:16px 0}label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--navy);display:block;margin-bottom:6px}select,input[type="search"]{width:100%;padding:10px 11px;border:1px solid #cbd8df;border-radius:10px;background:#fff;color:var(--text);font-size:.95rem}.tab-panel{display:none}.tab-panel.active{display:block}.kpis{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:14px;margin:18px 0}.kpi{background:#fff;border:1px solid var(--border);border-left:7px solid var(--blue);border-radius:16px;padding:18px;box-shadow:var(--shadow)}.kpi:nth-child(2){border-left-color:var(--gold)}.kpi:nth-child(3){border-left-color:var(--green)}.kpi:nth-child(4){border-left-color:var(--teal)}.kpi .label{color:var(--navy);font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}.kpi .value{color:var(--navy);font-weight:800;font-size:clamp(1.55rem,3vw,2.2rem);letter-spacing:-.04em}.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}.grid-3{display:grid;grid-template-columns:1fr 1.35fr .9fr;gap:16px;margin:16px 0}.full-card{margin:16px 0}.hidden{display:none!important}.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow);min-width:0}.card h2,.card h3{margin:0 0 6px;color:var(--navy);letter-spacing:-.02em;text-transform:uppercase}.card p{margin:0 0 10px;color:#647174;font-size:.92rem}.chart-wrap{position:relative;width:100%;height:360px}.chart-wrap.small{height:320px}.callout{border-radius:16px;padding:18px;background:#fff8ea;border:1px solid #f8d389;box-shadow:var(--shadow)}.callout.orange{background:#fff3ef;border-color:#ffd4c8}.callout.blue{background:#ecf6fa;border-color:var(--light-blue)}.callout h2{margin:0 0 8px;color:var(--navy);text-transform:uppercase}.callout .big{font-size:2.35rem;font-weight:900;color:var(--orange);line-height:1}.bar-metric{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}.bar-metric div{font-size:.92rem}.bar-metric strong{display:block;font-size:2rem;color:var(--orange);line-height:1}.projected{font-size:1.05rem;font-weight:800;color:var(--navy);padding:12px 14px;background:#fff8ea;border-left:6px solid var(--gold);border-radius:10px;margin-top:12px}.table-toolbar{display:flex;gap:12px;align-items:end;justify-content:space-between;flex-wrap:wrap;margin:10px 0 14px}.table-toolbar .search{min-width:min(360px,100%);flex:1 1 260px}.table-wrap{width:100%;overflow:auto;border:1px solid var(--border);border-radius:12px;max-height:1120px}table{width:100%;border-collapse:collapse;min-width:760px;background:#fff}th,td{padding:10px 12px;border-bottom:1px solid #e7eef2;text-align:left;vertical-align:top;font-size:.92rem}th{background:var(--navy);color:#fff;position:sticky;top:0;cursor:pointer;white-space:nowrap;z-index:1}tr:nth-child(even) td{background:#f8fbfc}.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-weight:700;font-size:.78rem;background:#e7f3f8;color:var(--navy);white-space:nowrap}.badge.deployed{background:#e9f6df;color:#2e651a}.badge.pilot{background:#fff2d7;color:#8a5700}.badge.dev{background:#e8f3f8;color:#0c436a}.pager{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:12px}.pager button{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;color:var(--navy);font-weight:700}.pager button:disabled{opacity:.45}.field-table{min-width:0}.field-table th{position:static}.field-table td:first-child{font-weight:700;color:var(--navy)}.takeaways{margin:0;padding-left:0;list-style:none}.takeaways li{margin:8px 0;padding:8px 10px;border-radius:10px;background:rgba(184,209,220,.35)}.quality-callout{display:flex;align-items:center;gap:14px;margin-top:14px}.quality-callout .percent{font-size:3rem;font-weight:900;color:var(--navy);line-height:1}.footnote{color:#647174;font-size:.86rem;margin-top:16px}.error{padding:14px;border:1px solid #ffd4c8;background:#fff3ef;color:#8a2f12;border-radius:12px;margin-top:12px;display:none}@media(max-width:980px){.filters,.kpis,.grid-2,.grid-3{grid-template-columns:1fr 1fr}.grid-3 .callout{grid-column:1/-1}}@media(max-width:640px){.dashboard{padding:12px}.filters,.kpis,.grid-2,.grid-3,.bar-metric{grid-template-columns:1fr}.hero{padding:20px}.chart-wrap{height:330px}.tab-btn{width:100%;border-radius:12px 12px 0 0;text-align:left}.table-wrap{max-height:900px}}
-.perception-filters {
+    *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:var(--bg);line-height:1.45}.dashboard{max-width:1180px;margin:0 auto;padding:20px}.hero{border-top:10px solid var(--gold);background:linear-gradient(135deg,var(--navy),#155e8f);color:#fff;border-radius:18px;padding:28px;box-shadow:var(--shadow);margin-bottom:16px}.hero h1{margin:0 0 8px;font-size:clamp(1.75rem,3vw,2.6rem);letter-spacing:-.03em;color:#fff}.hero p{margin:0;max-width:950px;color:rgba(255,255,255,.92);font-size:1.02rem}.notice{margin-top:12px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.92);font-size:.9rem}.tabs{display:flex;gap:4px;flex-wrap:wrap;margin:18px 0 0;border-bottom:3px solid var(--navy)}.tab-btn{border:1px solid var(--border);border-bottom:0;background:#f4f7f9;color:var(--navy);border-radius:14px 14px 0 0;padding:12px 18px;font-weight:900;cursor:pointer;box-shadow:none;position:relative;top:3px;text-transform:uppercase;letter-spacing:.02em}.tab-btn[aria-selected="true"]{background:#fff;color:var(--navy);border-color:var(--navy);border-top:5px solid var(--gold);padding-top:8px}.overview-note{margin:10px 0 16px;padding:12px 14px;border-left:6px solid var(--blue);background:#f4f7f9;border-radius:12px;color:#505859;font-size:.92rem}.overview-callouts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}
+.projected-card .projected-line {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin: 0;
+  color: var(--navy);
+  overflow-wrap: anywhere;
+}
+
+.projected-card #projectedGrowth {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--navy);
+  white-space: normal;
+}
+
+.projected-note {
+  margin: 8px 0 0;
+  font-size: .86rem;
+  color: #647174;
+}    
+  .filters{display:grid;grid-template-columns:repeat(3,minmax(160px,1fr));gap:12px;background:var(--soft);border:1px solid var(--border);border-radius:16px;padding:16px;margin:16px 0}label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--navy);display:block;margin-bottom:6px}select,input[type="search"]{width:100%;padding:10px 11px;border:1px solid #cbd8df;border-radius:10px;background:#fff;color:var(--text);font-size:.95rem}.tab-panel{display:none}.tab-panel.active{display:block}.kpis{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:14px;margin:18px 0}.kpi{background:#fff;border:1px solid var(--border);border-left:7px solid var(--blue);border-radius:16px;padding:18px;box-shadow:var(--shadow)}.kpi:nth-child(2){border-left-color:var(--gold)}.kpi:nth-child(3){border-left-color:var(--green)}.kpi:nth-child(4){border-left-color:var(--teal)}.kpi .label{color:var(--navy);font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}.kpi .value{color:var(--navy);font-weight:800;font-size:clamp(1.55rem,3vw,2.2rem);letter-spacing:-.04em}.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}.grid-3{display:grid;grid-template-columns:1fr 1.35fr .9fr;gap:16px;margin:16px 0}.full-card{margin:16px 0}.hidden{display:none!important}.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow);min-width:0}.card h2,.card h3{margin:0 0 6px;color:var(--navy);letter-spacing:-.02em;text-transform:uppercase}.card p{margin:0 0 10px;color:#647174;font-size:.92rem}.chart-wrap{position:relative;width:100%;height:360px}.chart-wrap.small{height:320px}.callout{border-radius:16px;padding:18px;background:#fff8ea;border:1px solid #f8d389;box-shadow:var(--shadow)}.callout.orange{background:#fff3ef;border-color:#ffd4c8}.callout.blue{background:#ecf6fa;border-color:var(--light-blue)}.callout h2{margin:0 0 8px;color:var(--navy);text-transform:uppercase}.callout .big{font-size:2.35rem;font-weight:900;color:var(--orange);line-height:1}.bar-metric{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}.bar-metric div{font-size:.92rem}.bar-metric strong{display:block;font-size:2rem;color:var(--orange);line-height:1}.projected{font-size:1.05rem;font-weight:800;color:var(--navy);padding:12px 14px;background:#fff8ea;border-left:6px solid var(--gold);border-radius:10px;margin-top:12px}.table-toolbar{display:flex;gap:12px;align-items:end;justify-content:space-between;flex-wrap:wrap;margin:10px 0 14px}.table-toolbar .search{min-width:min(360px,100%);flex:1 1 260px}.table-wrap{width:100%;overflow:auto;border:1px solid var(--border);border-radius:12px;max-height:1120px}table{width:100%;border-collapse:collapse;min-width:760px;background:#fff}th,td{padding:10px 12px;border-bottom:1px solid #e7eef2;text-align:left;vertical-align:top;font-size:.92rem}th{background:var(--navy);color:#fff;position:sticky;top:0;cursor:pointer;white-space:nowrap;z-index:1}tr:nth-child(even) td{background:#f8fbfc}.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-weight:700;font-size:.78rem;background:#e7f3f8;color:var(--navy);white-space:nowrap}.badge.deployed{background:#e9f6df;color:#2e651a}.badge.pilot{background:#fff2d7;color:#8a5700}.badge.dev{background:#e8f3f8;color:#0c436a}.pager{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:12px}.pager button{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;color:var(--navy);font-weight:700}.pager button:disabled{opacity:.45}.field-table{min-width:0}.field-table th{position:static}.field-table td:first-child{font-weight:700;color:var(--navy)}.takeaways{margin:0;padding-left:0;list-style:none}.takeaways li{margin:8px 0;padding:8px 10px;border-radius:10px;background:rgba(184,209,220,.35)}.quality-callout{display:flex;align-items:center;gap:14px;margin-top:14px}.quality-callout .percent{font-size:3rem;font-weight:900;color:var(--navy);line-height:1}.footnote{color:#647174;font-size:.86rem;margin-top:16px}.error{padding:14px;border:1px solid #ffd4c8;background:#fff3ef;color:#8a2f12;border-radius:12px;margin-top:12px;display:none}@media(max-width:980px){.filters,.kpis,.grid-2,.grid-3{grid-template-columns:1fr 1fr}.grid-3 .callout{grid-column:1/-1}}@media(max-width:640px){.dashboard{padding:12px}.filters,.kpis,.grid-2,.grid-3,.bar-metric{grid-template-columns:1fr}.hero{padding:20px}.chart-wrap{height:330px}.tab-btn{width:100%;border-radius:12px 12px 0 0;text-align:left}.table-wrap{max-height:900px}}
+.implementation-summary {
+  margin: 12px 0 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--soft);
+  border: 1px solid var(--border);
+}
+
+.implementation-total {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.implementation-total strong {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.implementation-total span {
+  font-weight: 800;
+}
+
+.implementation-statuses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.implementation-statuses span {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--border);
+  color: var(--navy);
+  font-size: .88rem;
+  font-weight: 700;
+}
+
+.implementation-note {
+  margin: 8px 0 0;
+  font-size: .86rem;
+  color: #647174;
+}
+    .perception-filters {
   margin: 16px 0 16px;
   grid-template-columns: repeat(3, minmax(160px, 1fr));
 }
@@ -105,15 +174,31 @@
     <strong>Note:</strong> Headline savings, enrollments, and OER section counts reflect fully deployed OER courses only and are counted beginning with the term in which each course was deployed. The current academic-year view includes available term data and can expand as additional terms are added. Enrollments may include duplicated students across courses or terms. Savings are estimates based on enrollment and textbook cost assumptions.
   </div>
 
-  <section class="grid-2">
-    <article class="card">
-      <h2>OER Implementation Status</h2>
-      <p>Course status across the OER pipeline.</p>
-      <div class="chart-wrap small">
-        <canvas id="pipelineChart"></canvas>
-      </div>
-      <div id="implementationStatusSummary" class="status-summary" aria-live="polite"></div>
-    </article>
+<article class="card">
+  <h2>OER Implementation Status</h2>
+  <p>Course status across the OER implementation pipeline.</p>
+
+  <div class="implementation-summary">
+    <div class="implementation-total">
+      <strong id="pipelineTotal">95</strong>
+      <span>total OER pipeline courses</span>
+    </div>
+
+    <div class="implementation-statuses">
+      <span><strong id="fullyDeployedCount">66</strong> fully deployed</span>
+      <span><strong id="inDevelopmentCount">22</strong> in development</span>
+      <span><strong id="inPilotCount">7</strong> in pilot</span>
+    </div>
+
+    <p class="implementation-note">
+      Impact totals include fully deployed courses only, starting with each course’s deployment term. Pilot and development courses show pipeline work, not verified impact.
+    </p>
+  </div>
+
+  <div class="chart-wrap small">
+    <canvas id="pipelineChart"></canvas>
+  </div>
+</article>
 
     <article class="card">
       <h2>Savings by Department</h2>
@@ -125,9 +210,15 @@
   </section>
 
   <section class="overview-callouts">
-    <aside class="callout projected-card">
-      <p class="projected-line" id="projectedGrowthText"><strong>Projected Growth</strong> <span aria-hidden="true">|</span> <span id="projectedGrowth">—</span></p>
-    </aside>
+<aside class="callout projected-card">
+  <h2>Projected Growth</h2>
+  <p class="projected-line">
+    If the <span id="developingCourseCount">22</span> courses currently in development are fully deployed, MTC could save students an additional <span id="projectedGrowth">—</span>.
+  </p>
+  <p class="projected-note">
+    This projection is based on the average savings per fully deployed course and does not estimate future section-level enrollment.
+  </p>
+</aside>
 
     <aside class="callout orange">
       <h2>Why OER Matters</h2>
