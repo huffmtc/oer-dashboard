@@ -437,7 +437,7 @@ function chartBase(indexAxis='x',currency=false,noDataOptions={}){
 
 function barChart(id,labels,values,color,currency=false,noDataOptions=noDataText()){
   destroyChart(id);
-  const safeLabels = labels.length ? labels : ['No verified data'];
+  const safeLabels = labels.length ? labels : ['No data'];
   const safeValues = values.length ? values : [0];
 
   charts[id]=new Chart(byId(id),{
@@ -457,7 +457,7 @@ function barChart(id,labels,values,color,currency=false,noDataOptions=noDataText
 
 function doughnut(id,labels,values,noDataOptions=noDataText()){
   destroyChart(id);
-  const safeLabels = labels.length ? labels : ['No verified data'];
+  const safeLabels = labels.length ? labels : ['No data'];
   const safeValues = values.length ? values : [0];
 
   charts[id]=new Chart(byId(id),{
